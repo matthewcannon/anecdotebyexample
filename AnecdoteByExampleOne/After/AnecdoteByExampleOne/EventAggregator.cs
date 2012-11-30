@@ -8,10 +8,7 @@ namespace AnecdoteByExampleOne
  
         public void Publish(Event @event)
         {
-            foreach (var eventHandler in _eventHandlers)
-            {
-                eventHandler.Handle(@event);
-            }
+            foreach (var eventHandler in _eventHandlers) eventHandler.Handle(@event);
         }
 
         public void Register(Events.IHandle<Event> eventHandler)

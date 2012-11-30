@@ -2,12 +2,12 @@
 {
     public class Task
     {
-        readonly IHandle<string, Query> _queryHandler;
+        readonly IHandle<Something, Query> _queryHandler;
         readonly IHandle<FirstCommand> _firstCommandHandler;
         readonly IHandle<SecondCommand> _secondCommandHandler;
 
         public Task(
-            IHandle<string, Query> queryHandler,
+            IHandle<Something, Query> queryHandler,
             IHandle<FirstCommand> firstCommandHandler,
             IHandle<SecondCommand> secondCommandHandler)
         {
@@ -18,11 +18,11 @@
 
         public void Execute()
         {
-            var queryResult = _queryHandler.Handle(new Query());
+            var payload = _queryHandler.Handle(new Query());
 
-            if (queryResult != null)
+            if (payload != null)
             {
-                if (_firstCommandHandler.Handle(new FirstCommand()) is CommandSucceeded)
+                if (_firstCommandHandler.Handle(new FirstCommand(payload)) is CommandSucceeded)
                 {
                     _secondCommandHandler.Handle(new SecondCommand());
                 }

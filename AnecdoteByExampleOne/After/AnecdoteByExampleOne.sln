@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnecdoteByExampleOne", "AnecdoteByExampleOne\AnecdoteByExampleOne.csproj", "{DCFDD136-F222-42D4-BDFA-BD1018894044}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnecdoteByExampleOne.Tests", "AnecdoteByExampleOne.Tests\AnecdoteByExampleOne.Tests.csproj", "{0F8104C4-F244-4956-9EFA-B68FC0429616}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCFDD136-F222-42D4-BDFA-BD1018894044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCFDD136-F222-42D4-BDFA-BD1018894044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCFDD136-F222-42D4-BDFA-BD1018894044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCFDD136-F222-42D4-BDFA-BD1018894044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F8104C4-F244-4956-9EFA-B68FC0429616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8104C4-F244-4956-9EFA-B68FC0429616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8104C4-F244-4956-9EFA-B68FC0429616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8104C4-F244-4956-9EFA-B68FC0429616}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

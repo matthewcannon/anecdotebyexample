@@ -1,61 +1,81 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace AnecdoteByExampleOne.Tests
 {
     [TestFixture]
-    public class query_returns_nothing : IHandle<string, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
+    public class query_finds_nothing : IHandle<Something, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
     {
-        private bool _firstCommandExecuted;
+        private FirstCommand _firstCommand;
+        private SecondCommand _secondCommand;
 
         [Test]
         public void first_command_is_not_executed()
         {
             new Task(this, this, this).Execute();
 
-            Assert.That(_firstCommandExecuted, Is.False);
+            Assert.That(_firstCommand, Is.Null);
+        }
+        
+        [Test]
+        public void second_command_is_not_executed()
+        {
+            new Task(this, this, this).Execute();
+
+            Assert.That(_secondCommand, Is.Null);
         }
 
-        public IEnumerable<string> Handle(Query query)
+        public Something Handle(Query query)
         {
             return null;
         }
 
         public CommandCompleted Handle(FirstCommand command)
         {
-            _firstCommandExecuted = true;
+            _firstCommand = command;
 
             return new CommandCompleted();
         }
 
         public CommandCompleted Handle(SecondCommand command)
         {
+            _secondCommand = command;
+
             return new CommandCompleted();
         }
     }
 
     [TestFixture]
-    public class query_returns_something : IHandle<string, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
+    public class query_finds_something : IHandle<Something, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
     {
-        private bool _firstCommandExecuted;
+        private FirstCommand _firstCommand;
+        private Something _somethingFound;
 
         [Test]
         public void first_command_is_executed()
         {
             new Task(this, this, this).Execute();
 
-            Assert.That(_firstCommandExecuted, Is.True);
+            Assert.That(_firstCommand, Is.Not.Null);
         }
 
-        public IEnumerable<string> Handle(Query query)
+        [Test]
+        public void payload_of_command_executed_is_something_found()
         {
-            return new Collection<string>();
+            new Task(this, this, this).Execute();
+
+            Assert.That(_firstCommand.Payload, Is.EqualTo(_somethingFound));
+        }
+
+        public Something Handle(Query query)
+        {
+            _somethingFound = new Something();
+
+            return _somethingFound;
         }
 
         public CommandCompleted Handle(FirstCommand command)
         {
-            _firstCommandExecuted = true;
+            _firstCommand = command;
 
             return new CommandCompleted();
         }
@@ -67,21 +87,21 @@ namespace AnecdoteByExampleOne.Tests
     }
 
     [TestFixture]
-    public class first_command_succeeds : IHandle<string, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
+    public class first_command_succeeds : IHandle<Something, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
     {
-        private bool _secondCommandExecuted;
+        private SecondCommand _secondCommand;
 
         [Test]
         public void second_command_is_executed()
         {
             new Task(this, this, this).Execute();
 
-            Assert.That(_secondCommandExecuted, Is.True);
+            Assert.That(_secondCommand, Is.Not.Null);
         }
 
-        public IEnumerable<string> Handle(Query query)
+        public Something Handle(Query query)
         {
-            return new Collection<string>();
+            return new Something();
         }
 
         public CommandCompleted Handle(FirstCommand command)
@@ -91,28 +111,28 @@ namespace AnecdoteByExampleOne.Tests
 
         public CommandCompleted Handle(SecondCommand command)
         {
-            _secondCommandExecuted = true;
+            _secondCommand = command;
 
             return new CommandCompleted();
         }
     }
 
     [TestFixture]
-    public class first_command_fails : IHandle<string, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
+    public class first_command_fails : IHandle<Something, Query>, IHandle<FirstCommand>, IHandle<SecondCommand>
     {
-        private bool _secondCommandExecuted;
+        private SecondCommand _secondCommand;
 
         [Test]
         public void second_command_is_not_executed()
         {
             new Task(this, this, this).Execute();
 
-            Assert.That(_secondCommandExecuted, Is.False);
+            Assert.That(_secondCommand, Is.Null);
         }
 
-        public IEnumerable<string> Handle(Query query)
+        public Something Handle(Query query)
         {
-            return new Collection<string>();
+            return new Something();
         }
 
         public CommandCompleted Handle(FirstCommand command)
@@ -122,7 +142,7 @@ namespace AnecdoteByExampleOne.Tests
 
         public CommandCompleted Handle(SecondCommand command)
         {
-            _secondCommandExecuted = true;
+            _secondCommand = command;
 
             return new CommandCompleted();
         }

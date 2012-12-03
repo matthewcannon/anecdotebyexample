@@ -2,7 +2,7 @@
 {
     public class Task : Events.IHandle<Event>
     {
-        private readonly EventAggregator _eventAggregator;
+        readonly EventAggregator _eventAggregator;
         readonly Queries.IHandle<Query> _queryHandler;
         Commands.IHandle<FirstCommand> _firstCommandHandler;
         Commands.IHandle<SecondCommand> _secondCommandHandler;

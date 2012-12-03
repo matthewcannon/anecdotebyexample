@@ -6,7 +6,7 @@
         readonly Queries.IHandle<Query> _queryHandler;
         Commands.IHandle<FirstCommand> _firstCommandHandler;
         Commands.IHandle<SecondCommand> _secondCommandHandler;
-        Something _something;
+        Something _payload;
 
         public Task(
             EventAggregator eventAggregator,
@@ -26,7 +26,7 @@
         {
             _queryHandler.Handle(new Query());
         
-            _firstCommandHandler.Handle(new FirstCommand(_something));
+            _firstCommandHandler.Handle(new FirstCommand(_payload));
             
             _secondCommandHandler.Handle(new SecondCommand());
         }
@@ -39,7 +39,7 @@
                 _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);
             }
 
-            if (@event is Found<Something>) _something = (@event as Found<Something>).ThingFound;
+            if (@event is Found<Something>) _payload = (@event as Found<Something>).ThingFound;
 
             if (@event is CommandFailed<FirstCommand>) _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);
         }

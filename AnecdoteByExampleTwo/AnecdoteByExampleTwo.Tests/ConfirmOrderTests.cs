@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace AnecdoteByExampleTwo.Tests
 {
     [TestFixture]
-    public class always : IHandle<IEvent>
+    public class always : IHandle<EmailSent<OrderConfirmationEmail>>
     {
         IList<IEvent> _events;
         EventAggregator _eventAggregator;
@@ -30,7 +30,7 @@ namespace AnecdoteByExampleTwo.Tests
             Assert.That(_events.Where(e => e is EmailSent<OrderConfirmationEmail>).Count(), Is.EqualTo(1));
         }
 
-        public void Handle(IEvent @event)
+        public void Handle(EmailSent<OrderConfirmationEmail> @event)
         {
             _events.Add(@event);
         }
@@ -53,28 +53,30 @@ namespace AnecdoteByExampleTwo.Tests
 
     internal class EventAggregator
     {
-        readonly IList<IHandle<IEvent>> _eventHandlers;
+        readonly IList<IHandle> _eventHandlers;
 
         public EventAggregator()
         {
-            _eventHandlers = new List<IHandle<IEvent>>();    
+            _eventHandlers = new List<IHandle>();    
         }
 
-        public void Publish(IEvent @event)
+        public void Publish<T>(T @event) where T : IEvent
         {
-            foreach(var eventHandler in _eventHandlers)
+            foreach (var eventHandler in _eventHandlers.OfType<IHandle<T>>())
             {
                 eventHandler.Handle(@event);
             }
         }
 
-        public void Register<T>(T eventHandler) where T : IHandle<IEvent>
+        public void Register<T>(IHandle<T> eventHandler) where T : IEvent
         {
             _eventHandlers.Add(eventHandler);
         }
     }
 
-    internal interface IHandle<T> where T : IEvent
+    internal interface IHandle { }
+
+    internal interface IHandle<T> : IHandle where T : IEvent
     {
         void Handle(T @event);
     }
@@ -86,4 +88,6 @@ namespace AnecdoteByExampleTwo.Tests
     public class Email {}
 
     public interface IEvent {}
+
+    public class Nothing : IEvent { }
 }

@@ -43,7 +43,7 @@
             _payload = foundSomething.ThingFound;
         }
 
-        public void Handle(CommandFailed<FirstCommand> secondCommandFailed)
+        public void Handle(CommandFailed<FirstCommand> firstCommandFailed)
         {
             _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);
         }

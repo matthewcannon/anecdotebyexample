@@ -1,17 +1,26 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AnecdoteByExampleOne
 {
     public class EventAggregator
     {
-        readonly IList<Events.IHandle<Event>> _eventHandlers = new List<Events.IHandle<Event>>();
- 
-        public void Publish(Event @event)
+        readonly IList<IHandle> _eventHandlers;
+
+        public EventAggregator()
         {
-            foreach (var eventHandler in _eventHandlers) eventHandler.Handle(@event);
+            _eventHandlers = new List<IHandle>();
         }
 
-        public void Register(Events.IHandle<Event> eventHandler)
+        public void Publish<T>(T @event) where T : Event
+        {
+            foreach (var eventHandler in _eventHandlers.OfType<Events.IHandle<T>>())
+            {
+                eventHandler.Handle(@event);
+            }
+        }
+
+        public void Register<T>(Events.IHandle<T> eventHandler) where T : Event
         {
             _eventHandlers.Add(eventHandler);
         }

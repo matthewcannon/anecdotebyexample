@@ -1,8 +1,10 @@
 namespace AnecdoteByExampleOne
 {
+    public interface IHandle { }
+
     namespace Commands
     {
-        public interface IHandle<T1> where T1 : Command
+        public interface IHandle<T1> : IHandle where T1 : Command
         {
             void Handle(T1 command);
         }
@@ -10,7 +12,7 @@ namespace AnecdoteByExampleOne
 
     namespace Queries
     {
-        public interface IHandle<T1> where T1 : Query
+        public interface IHandle<T1> : IHandle where T1 : Query
         {
             void Handle(T1 query);
         }
@@ -18,9 +20,9 @@ namespace AnecdoteByExampleOne
 
     namespace Events
     {
-        public interface IHandle<T1> where T1 : Event
+        public interface IHandle<T1> : IHandle where T1 : Event
         {
-            void Handle(T1 @event);
+            void Handle(T1 secondCommandNotExecuted);
         }
     }
 }

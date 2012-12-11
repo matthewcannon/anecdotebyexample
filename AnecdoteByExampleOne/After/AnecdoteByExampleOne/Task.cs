@@ -1,6 +1,6 @@
 ﻿namespace AnecdoteByExampleOne
 {
-    public class Task : Events.IHandle<Event>
+    public class Task : Events.IHandle<Found<Nothing>>, Events.IHandle<Found<Something>>, Events.IHandle<CommandFailed<FirstCommand>>
     {
         readonly EventAggregator _eventAggregator;
         readonly Queries.IHandle<Query> _queryHandler;
@@ -15,7 +15,9 @@
             Commands.IHandle<SecondCommand> secondCommandHandler)
         {
             _eventAggregator = eventAggregator;
-            _eventAggregator.Register(this);
+            _eventAggregator.Register<Found<Nothing>>(this);
+            _eventAggregator.Register<Found<Something>>(this);
+            _eventAggregator.Register<CommandFailed<FirstCommand>>(this);
 
             _queryHandler = queryHandler;
             _firstCommandHandler = firstCommandHandler;
@@ -31,17 +33,19 @@
             _secondCommandHandler.Handle(new SecondCommand());
         }
 
-        public void Handle(Event @event)
+        public void Handle(Found<Nothing> foundNothing)
         {
-            if (@event is Found<Nothing>)
-            {
-                _firstCommandHandler = new NullFirstCommandHandler(_eventAggregator);
-                _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);
-            }
+            _firstCommandHandler = new NullFirstCommandHandler(_eventAggregator);
+            _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);                 }
 
-            if (@event is Found<Something>) _payload = (@event as Found<Something>).ThingFound;
+        public void Handle(Found<Something> foundSomething)
+        {
+            _payload = foundSomething.ThingFound;
+        }
 
-            if (@event is CommandFailed<FirstCommand>) _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);
+        public void Handle(CommandFailed<FirstCommand> secondCommandFailed)
+        {
+            _secondCommandHandler = new NullSecondCommandHandler(_eventAggregator);
         }
     }
 }

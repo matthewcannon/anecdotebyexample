@@ -5,17 +5,19 @@ using NUnit.Framework;
 namespace AnecdoteByExampleOne.Tests
 {
     [TestFixture]
-    public class query_finds_nothing : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<Event>
+    public class query_finds_nothing : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<CommandNotExecuted<FirstCommand>>, Events.IHandle<CommandNotExecuted<SecondCommand>>
     {
         EventAggregator _eventAggregator;
-        IList<Event> _events;
+        IList<CommandNotExecuted<FirstCommand>> _firstCommandNotExecutedEvents;
+        IList<CommandNotExecuted<SecondCommand>> _secondCommandNotExecutedEvents;
 
         [SetUp]
         public void SetUp()
         {
             _eventAggregator = new EventAggregator();
-            _eventAggregator.Register(this);
-            _events = new List<Event>();
+            _eventAggregator.Register<CommandNotExecuted<FirstCommand>>(this);
+            _firstCommandNotExecutedEvents = new List<CommandNotExecuted<FirstCommand>>();
+            _secondCommandNotExecutedEvents = new List<CommandNotExecuted<SecondCommand>>();
         }
 
         [Test]
@@ -23,7 +25,7 @@ namespace AnecdoteByExampleOne.Tests
         {
             new Task(_eventAggregator, this, this, this).Execute();
 
-            Assert.That(_events.Where(e => e is CommandNotExecuted<FirstCommand>).Count(), Is.EqualTo(1));
+            Assert.That(_firstCommandNotExecutedEvents.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -31,7 +33,7 @@ namespace AnecdoteByExampleOne.Tests
         {
             new Task(_eventAggregator, this, this, this).Execute();
 
-            Assert.That(_events.Where(e => e is CommandNotExecuted<SecondCommand>).Count(), Is.EqualTo(1));
+            Assert.That(_secondCommandNotExecutedEvents.Count(), Is.EqualTo(1));
         }
 
         public void Handle(Query query)
@@ -49,26 +51,31 @@ namespace AnecdoteByExampleOne.Tests
             _eventAggregator.Publish(new CommandExecuted<SecondCommand>());            
         }
 
-        public void Handle(Event @event)
+        public void Handle(CommandNotExecuted<FirstCommand> firstCommandNotExecuted)
         {
-            _events.Add(@event);
+            _firstCommandNotExecutedEvents.Add(firstCommandNotExecuted);
+        }
+
+        public void Handle(CommandNotExecuted<SecondCommand> secondCommandNotExecuted)
+        {
+            _secondCommandNotExecutedEvents.Add(secondCommandNotExecuted);
         }
     }
 
     [TestFixture]
-    public class query_finds_something : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<Event>
+    public class query_finds_something : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<CommandExecuted<FirstCommand>>
     {
         EventAggregator _eventAggregator;
-        IList<Event> _events;
-        private Something _somethingFound;
-        private FirstCommand _commandExecuted;
+        IList<CommandExecuted<FirstCommand>> _firstCommandExecutedEvents;
+        Something _somethingFound;
+        FirstCommand _commandExecuted;
 
         [SetUp]
         public void SetUp()
         {
             _eventAggregator = new EventAggregator();
             _eventAggregator.Register(this);
-            _events = new List<Event>();
+            _firstCommandExecutedEvents = new List<CommandExecuted<FirstCommand>>();
         }
 
         [Test]
@@ -76,7 +83,7 @@ namespace AnecdoteByExampleOne.Tests
         {
             new Task(_eventAggregator, this, this, this).Execute();
 
-            Assert.That(_events.Where(e => e is CommandExecuted<FirstCommand>).Count(), Is.EqualTo(1));
+            Assert.That(_firstCommandExecutedEvents.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -106,24 +113,24 @@ namespace AnecdoteByExampleOne.Tests
             _eventAggregator.Publish(new CommandExecuted<SecondCommand>());
         }
 
-        public void Handle(Event @event)
+        public void Handle(CommandExecuted<FirstCommand> firstCommandExecuted)
         {
-            _events.Add(@event);
+            _firstCommandExecutedEvents.Add(firstCommandExecuted);
         }
     }
 
     [TestFixture]
-    public class first_command_succeeds : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<Event>
+    public class first_command_succeeds : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<CommandExecuted<SecondCommand>>
     {
         EventAggregator _eventAggregator;
-        IList<Event> _events;
+        IList<CommandExecuted<SecondCommand>> _secondCommandExecutedEvents;
 
         [SetUp]
         public void SetUp()
         {
             _eventAggregator = new EventAggregator();
             _eventAggregator.Register(this);
-            _events = new List<Event>();
+            _secondCommandExecutedEvents = new List<CommandExecuted<SecondCommand>>();
         }
 
         [Test]
@@ -131,7 +138,7 @@ namespace AnecdoteByExampleOne.Tests
         {
             new Task(_eventAggregator, this, this, this).Execute();
 
-            Assert.That(_events.Where(e => e is CommandExecuted<SecondCommand>).Count(), Is.EqualTo(1));
+            Assert.That(_secondCommandExecutedEvents.Count(), Is.EqualTo(1));
         }
 
         public void Handle(Query query)
@@ -149,24 +156,24 @@ namespace AnecdoteByExampleOne.Tests
             _eventAggregator.Publish(new CommandExecuted<SecondCommand>());
         }
 
-        public void Handle(Event @event)
+        public void Handle(CommandExecuted<SecondCommand> secondCommandExecuted)
         {
-            _events.Add(@event);
+            _secondCommandExecutedEvents.Add(secondCommandExecuted);
         }
     }
 
     [TestFixture]
-    public class first_command_fails : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<Event>
+    public class first_command_fails : Queries.IHandle<Query>, Commands.IHandle<FirstCommand>, Commands.IHandle<SecondCommand>, Events.IHandle<CommandNotExecuted<SecondCommand>>
     {
         EventAggregator _eventAggregator;
-        IList<Event> _events;
+        IList<CommandNotExecuted<SecondCommand>> _secondCommandNotExcecutedEvents;
 
         [SetUp]
         public void SetUp()
         {
             _eventAggregator = new EventAggregator();
             _eventAggregator.Register(this);
-            _events = new List<Event>();
+            _secondCommandNotExcecutedEvents = new List<CommandNotExecuted<SecondCommand>>();
         }
 
         [Test]
@@ -174,7 +181,7 @@ namespace AnecdoteByExampleOne.Tests
         {
             new Task(_eventAggregator, this, this, this).Execute();
 
-            Assert.That(_events.Where(e => e is CommandNotExecuted<SecondCommand>).Count(), Is.EqualTo(1));
+            Assert.That(_secondCommandNotExcecutedEvents.Count(), Is.EqualTo(1));
         }
 
         public void Handle(Query query)
@@ -192,9 +199,9 @@ namespace AnecdoteByExampleOne.Tests
             _eventAggregator.Publish(new CommandExecuted<SecondCommand>());
         }
 
-        public void Handle(Event @event)
+        public void Handle(CommandNotExecuted<SecondCommand> secondCommandNotExecuted)
         {
-            _events.Add(@event);
+            _secondCommandNotExcecutedEvents.Add(secondCommandNotExecuted);
         }
     }
 }

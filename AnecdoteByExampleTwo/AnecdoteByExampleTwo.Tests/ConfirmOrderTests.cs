@@ -1,33 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AnecdoteByExampleTwo.Domain;
+using AnecdoteByExampleTwo.Factory;
 using NUnit.Framework;
 
 namespace AnecdoteByExampleTwo.Tests
 {
     [TestFixture]
-    public class always : IHandle<EmailSent<OrderConfirmationEmail>>
+    public class payment_is_accepted : IHandle<EmailSent<OrderConfirmationEmail>>
     {
-        IList<IEvent> _events;
+        IList<Event> _events;
         EventAggregator _eventAggregator;
 
         [SetUp]
         public void SetUp()
         {
-            _events = new List<IEvent>();
+            _events = new List<Event>();
             _eventAggregator = new EventAggregator();
             _eventAggregator.Register(this);
         }
 
         [Test]
-        public void an_order_confirmation_email_is_sent()
+        public void order_confirmation_email_is_sent()
         {
-            new ConfirmOrder(_eventAggregator).Execute();
-            OneOrderConfirmationEmailIsSent();
+            new TaskFactory().ConfirmOrder(_eventAggregator).Execute();
+            OrderConfirmationEmailIsSent();
         }
 
-        void OneOrderConfirmationEmailIsSent()
+        void OrderConfirmationEmailIsSent()
         {
-            Assert.That(_events.Where(e => e is EmailSent<OrderConfirmationEmail>).Count(), Is.EqualTo(1));
+            Assert.That(_events.OfType<EmailSent<OrderConfirmationEmail>>().Count(), Is.EqualTo(1));
         }
 
         public void Handle(EmailSent<OrderConfirmationEmail> @event)
@@ -36,58 +38,35 @@ namespace AnecdoteByExampleTwo.Tests
         }
     }
 
-    internal class ConfirmOrder
+    [TestFixture]
+    public class payment_is_rejected : IHandle<EmailSent<OrderConfirmationEmail>>
     {
-        readonly EventAggregator _eventAggregator;
+        IList<Event> _events;
+        EventAggregator _eventAggregator;
 
-        public ConfirmOrder(EventAggregator eventAggregator)
+        [SetUp]
+        public void SetUp()
         {
-            _eventAggregator = eventAggregator;
+            _events = new List<Event>();
+            _eventAggregator = new EventAggregator();
+            _eventAggregator.Register(this);
         }
 
-        public void Execute()
+        [Test]
+        public void order_confirmation_email_is_not_sent()
         {
-            _eventAggregator.Publish(new EmailSent<OrderConfirmationEmail>());
+            new TaskFactory().ConfirmOrder(_eventAggregator).Execute();
+            OrderConfirmationEmailIsNotSent();
+        }
+
+        void OrderConfirmationEmailIsNotSent()
+        {
+            Assert.That(_events.OfType<EmailSent<OrderConfirmationEmail>>().Count(), Is.EqualTo(0));
+        }
+
+        public void Handle(EmailSent<OrderConfirmationEmail> @event)
+        {
+            _events.Add(@event);
         }
     }
-
-    internal class EventAggregator
-    {
-        readonly IList<IHandle> _eventHandlers;
-
-        public EventAggregator()
-        {
-            _eventHandlers = new List<IHandle>();    
-        }
-
-        public void Publish<T>(T @event) where T : IEvent
-        {
-            foreach (var eventHandler in _eventHandlers.OfType<IHandle<T>>())
-            {
-                eventHandler.Handle(@event);
-            }
-        }
-
-        public void Register<T>(IHandle<T> eventHandler) where T : IEvent
-        {
-            _eventHandlers.Add(eventHandler);
-        }
-    }
-
-    internal interface IHandle { }
-
-    internal interface IHandle<T> : IHandle where T : IEvent
-    {
-        void Handle(T @event);
-    }
-
-    public class OrderConfirmationEmail : Email {}
-
-    public class EmailSent<T> : IEvent where T : Email {}
-
-    public class Email {}
-
-    public interface IEvent {}
-
-    public class Nothing : IEvent { }
 }

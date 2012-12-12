@@ -1,4 +1,5 @@
 ﻿using AnecdoteByExampleTwo.Application;
+using AnecdoteByExampleTwo.MailAdapters;
 
 namespace AnecdoteByExampleTwo.Factory
 {
@@ -6,7 +7,7 @@ namespace AnecdoteByExampleTwo.Factory
     {
         public ConfirmOrder ConfirmOrder(EventAggregator eventAggregator)
         {
-            return new ConfirmOrder(new HandleSendEmail(eventAggregator));
+            return new ConfirmOrder(new ExecuteSendEmail(eventAggregator, new SmtpEmailSender()));
         }
     }
 }

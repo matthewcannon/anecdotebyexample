@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace AnecdoteByExampleTwo.Tests
 {
     [TestFixture]
-    public class payment_is_accepted : IHandle<EmailSent<OrderConfirmationEmail>>
+    public class payment_is_accepted : IHandle<EmailSent<OrderConfirmationEmail>>, IPaymentHandler
     {
         IList<Event> _events;
         EventAggregator _eventAggregator;
@@ -23,18 +23,19 @@ namespace AnecdoteByExampleTwo.Tests
         [Test]
         public void order_confirmation_email_is_sent()
         {
-            new TaskFactory().ConfirmOrder(_eventAggregator).Execute();
-            OrderConfirmationEmailIsSent();
-        }
+            new TaskFactory().ConfirmOrder(_eventAggregator).Execute(new Order("customer@customer.com"));
 
-        void OrderConfirmationEmailIsSent()
-        {
             Assert.That(_events.OfType<EmailSent<OrderConfirmationEmail>>().Count(), Is.EqualTo(1));
         }
 
         public void Handle(EmailSent<OrderConfirmationEmail> @event)
         {
             _events.Add(@event);
+        }
+
+        public PaymentStatus Handle(Payment payment)
+        {
+            return new PaymentAccepted();
         }
     }
 
@@ -55,12 +56,7 @@ namespace AnecdoteByExampleTwo.Tests
         [Test]
         public void order_confirmation_email_is_not_sent()
         {
-            new TaskFactory().ConfirmOrder(_eventAggregator).Execute();
-            OrderConfirmationEmailIsNotSent();
-        }
-
-        void OrderConfirmationEmailIsNotSent()
-        {
+            new TaskFactory().ConfirmOrder(_eventAggregator).Execute(new Order("customer@customer.com"));
             Assert.That(_events.OfType<EmailSent<OrderConfirmationEmail>>().Count(), Is.EqualTo(0));
         }
 

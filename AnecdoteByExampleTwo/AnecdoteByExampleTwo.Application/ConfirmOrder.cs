@@ -2,16 +2,28 @@
 {
     public class ConfirmOrder
     {
-        readonly HandleSendEmail _handleSendEmail;
+        readonly ExecuteSendEmail _executeSendEmail;
 
-        public ConfirmOrder(HandleSendEmail handleSendEmail)
+        public ConfirmOrder(ExecuteSendEmail executeSendEmail)
         {
-            _handleSendEmail = handleSendEmail;
+            _executeSendEmail = executeSendEmail;
         }
 
-        public void Execute()
+        public void Execute(Order order)
         {
-            _handleSendEmail.Handle(new SendEmail<OrderConfirmationEmail>());
+            /*
+             * do payment
+             *
+             */
+
+            /*
+             * 
+             * dispatch order, etc.
+             * 
+             */
+
+            var orderConfirmationEmail = new OrderConfirmationEmail("noreply@confirm-order.com", order.Email);
+            _executeSendEmail.Execute(new SendEmail<OrderConfirmationEmail>(orderConfirmationEmail));
         }
     }
 }

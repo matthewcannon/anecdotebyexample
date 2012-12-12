@@ -39,6 +39,10 @@
       <Project>{44193DC0-BEB3-4055-8B54-7D888CD2326A}</Project>
       <Name>AnecdoteByExampleTwo.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AnecdoteByExampleTwo.MailAdapters\AnecdoteByExampleTwo.MailAdapters.csproj">
+      <Project>{7EB0573A-C5FB-4AAB-A8CD-C9C6042D4EFA}</Project>
+      <Name>AnecdoteByExampleTwo.MailAdapters</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

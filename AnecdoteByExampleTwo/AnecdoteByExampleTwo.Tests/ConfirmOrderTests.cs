@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AnecdoteByExampleTwo.Domain;
+using AnecdoteByExampleTwo.Application;
 using AnecdoteByExampleTwo.Factory;
 using NUnit.Framework;
 

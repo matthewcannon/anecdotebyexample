@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnecdoteByExampleTwo.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnecdoteByExampleTwo.Factory", "AnecdoteByExampleTwo.Factory\AnecdoteByExampleTwo.Factory.csproj", "{2A92F654-07A8-4C41-9BA3-4617C96D3A4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnecdoteByExampleTwo.Domain", "AnecdoteByExampleTwo.Domain\AnecdoteByExampleTwo.Domain.csproj", "{44193DC0-BEB3-4055-8B54-7D888CD2326A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnecdoteByExampleTwo.Application", "AnecdoteByExampleTwo.Application\AnecdoteByExampleTwo.Application.csproj", "{44193DC0-BEB3-4055-8B54-7D888CD2326A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

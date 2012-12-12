@@ -1,4 +1,4 @@
-﻿using AnecdoteByExampleTwo.Domain;
+﻿using AnecdoteByExampleTwo.Application;
 
 namespace AnecdoteByExampleTwo.Factory
 {

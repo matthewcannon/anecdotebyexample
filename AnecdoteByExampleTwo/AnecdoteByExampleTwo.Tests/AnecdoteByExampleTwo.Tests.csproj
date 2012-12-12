@@ -44,9 +44,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnecdoteByExampleTwo.Domain\AnecdoteByExampleTwo.Domain.csproj">
+    <ProjectReference Include="..\AnecdoteByExampleTwo.Application\AnecdoteByExampleTwo.Application.csproj">
       <Project>{44193DC0-BEB3-4055-8B54-7D888CD2326A}</Project>
-      <Name>AnecdoteByExampleTwo.Domain</Name>
+      <Name>AnecdoteByExampleTwo.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\AnecdoteByExampleTwo.Factory\AnecdoteByExampleTwo.Factory.csproj">
       <Project>{2A92F654-07A8-4C41-9BA3-4617C96D3A4A}</Project>

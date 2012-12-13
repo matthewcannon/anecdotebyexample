@@ -46,6 +46,7 @@
     <Compile Include="OrderConfirmationEmail.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="PaymentAccepted.cs" />
+    <Compile Include="PaymentRejected.cs" />
     <Compile Include="PaymentStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendEmail.cs" />

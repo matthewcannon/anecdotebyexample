@@ -5,9 +5,7 @@
         readonly EventAggregator _eventAggregator;
         readonly IEmailSender _emailSender;
 
-        public ExecuteSendEmail(
-            EventAggregator eventAggregator,
-            IEmailSender emailSender)
+        public ExecuteSendEmail(EventAggregator eventAggregator, IEmailSender emailSender)
         {
             _eventAggregator = eventAggregator;
             _emailSender = emailSender;

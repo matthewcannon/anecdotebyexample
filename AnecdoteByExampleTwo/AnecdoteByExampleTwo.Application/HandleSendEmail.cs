@@ -1,17 +1,17 @@
 ﻿namespace AnecdoteByExampleTwo.Application
 {
-    public class ExecuteSendEmail
+    public class HandleSendEmail
     {
         readonly EventAggregator _eventAggregator;
         readonly IEmailSender _emailSender;
 
-        public ExecuteSendEmail(EventAggregator eventAggregator, IEmailSender emailSender)
+        public HandleSendEmail(EventAggregator eventAggregator, IEmailSender emailSender)
         {
             _eventAggregator = eventAggregator;
             _emailSender = emailSender;
         }
 
-        public void Execute<T>(SendEmail<T> sendEmail) where T : Email
+        public void Handle<T>(SendEmail<T> sendEmail) where T : Email
         {
             _emailSender.SendEmail(sendEmail.Email);
             _eventAggregator.Publish(new EmailSent<T>());

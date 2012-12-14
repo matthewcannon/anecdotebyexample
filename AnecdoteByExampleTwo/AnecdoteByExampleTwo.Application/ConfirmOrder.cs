@@ -2,21 +2,21 @@
 {
     public class ConfirmOrder
     {
-        readonly ExecuteSendEmail _executeSendEmail;
-        readonly ExecuteMakePayment _executeMakePayment;
+        readonly HandleSendEmail _handleSendEmail;
+        readonly HandleMakePayment _handleMakePayment;
 
-        public ConfirmOrder(ExecuteSendEmail executeSendEmail, ExecuteMakePayment executeMakePayment)
+        public ConfirmOrder(HandleSendEmail handleSendEmail, HandleMakePayment handleMakePayment)
         {
-            _executeSendEmail = executeSendEmail;
-            _executeMakePayment = executeMakePayment;
+            _handleSendEmail = handleSendEmail;
+            _handleMakePayment = handleMakePayment;
         }
 
         public void Execute(Order order)
         {
-            _executeMakePayment.Execute(new MakePayment(order.Payment));
+            _handleMakePayment.Handle(new MakePayment(order.Payment));
 
             var orderConfirmationEmail = new OrderConfirmationEmail("noreply@confirm-order.com", order.Email);
-            _executeSendEmail.Execute(new SendEmail<OrderConfirmationEmail>(orderConfirmationEmail));
+            _handleSendEmail.Handle(new SendEmail<OrderConfirmationEmail>(orderConfirmationEmail));
         }
     }
 }

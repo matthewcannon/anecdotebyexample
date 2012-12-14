@@ -6,7 +6,7 @@ namespace AnecdoteByExampleTwo.Factory
     {
         public ConfirmOrder ConfirmOrder(EventAggregator eventAggregator, IEmailSender emailSender, IPaymentHandler paymentHandler)
         {
-            return new ConfirmOrder(new ExecuteSendEmail(eventAggregator, emailSender), new ExecuteMakePayment(eventAggregator, paymentHandler));
+            return new ConfirmOrder(new HandleSendEmail(eventAggregator, emailSender), new HandleMakePayment(eventAggregator, paymentHandler));
         }
     }
 }

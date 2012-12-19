@@ -4,6 +4,9 @@ namespace AnecdoteByExampleTwo.ServiceAdapter
 {
     public class ServicePaymentHandler : IPaymentHandler
     {
-        public void Handle(Payment payment) { }
+        public PaymentReceipt Handle(Payment payment)
+        {
+            return new SuccessReceipt();
+        }
     }
 }

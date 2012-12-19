@@ -15,7 +15,9 @@ namespace AnecdoteByExampleTwo.Application.CommandHandlers
 
         public void Handle(MakePayment makePayment)
         {
-            _paymentHandler.Handle(makePayment.Payment);
+            var paymentReceipt = _paymentHandler.Handle(makePayment.Payment);
+
+            if (paymentReceipt is FailureReceipt) _eventAggregator.Publish(new Events.PaymentRejected());
         }
     }
 }

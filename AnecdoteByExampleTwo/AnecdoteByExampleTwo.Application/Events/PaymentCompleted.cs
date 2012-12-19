@@ -1,4 +1,4 @@
 ﻿namespace AnecdoteByExampleTwo.Application.Events
 {
-    public class Event { }
+    public class PaymentCompleted : Event { }
 }

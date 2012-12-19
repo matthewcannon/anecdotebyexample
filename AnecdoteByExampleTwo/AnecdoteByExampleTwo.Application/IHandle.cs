@@ -1,4 +1,6 @@
-﻿namespace AnecdoteByExampleTwo.Application
+﻿using AnecdoteByExampleTwo.Application.Events;
+
+namespace AnecdoteByExampleTwo.Application
 {
     public interface IHandle { }
 

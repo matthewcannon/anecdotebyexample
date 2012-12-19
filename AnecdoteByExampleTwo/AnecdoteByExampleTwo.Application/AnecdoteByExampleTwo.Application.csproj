@@ -31,7 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlers\IHandleSendEmail.cs" />
+    <Compile Include="CommandHandlers\NullHandleSendEmail.cs" />
+    <Compile Include="Events\PaymentAccepted.cs" />
     <Compile Include="IEmailSender.cs" />
+    <Compile Include="SuccessReceipt.cs" />
+    <Compile Include="PaymentReceipt.cs" />
+    <Compile Include="FailureReceipt.cs" />
     <Compile Include="Tasks\ConfirmOrder.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Events\EmailSent.cs" />
@@ -47,14 +53,13 @@
     <Compile Include="Payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\SendEmail.cs" />
+    <Compile Include="Events\PaymentCompleted.cs" />
+    <Compile Include="Events\PaymentRejected.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

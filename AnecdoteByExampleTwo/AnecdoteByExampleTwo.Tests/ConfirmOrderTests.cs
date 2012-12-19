@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace AnecdoteByExampleTwo.Tests
 {
     [TestFixture]
-    public class payment_is_accepted : IHandle<EmailSent>, IEmailSender, IPaymentHandler
+    public class payment_succeeds : IHandle<EmailSent>, IEmailSender, IPaymentHandler
     {
         IList<Event> _events;
         EventAggregator _eventAggregator;
@@ -36,11 +36,14 @@ namespace AnecdoteByExampleTwo.Tests
 
         public void SendEmail(Email email) { }
 
-        public void Handle(Payment payment) { }
+        public PaymentReceipt Handle(Payment payment)
+        {
+            return new SuccessReceipt();
+        }
     }
-    
+
     [TestFixture]
-    public class payment_is_rejected : IHandle<EmailSent>, IEmailSender, IPaymentHandler
+    public class payment_fails : IHandle<EmailSent>, IEmailSender, IPaymentHandler
     {
         IList<Event> _events;
         EventAggregator _eventAggregator;
@@ -68,6 +71,9 @@ namespace AnecdoteByExampleTwo.Tests
 
         public void SendEmail(Email email) { }
 
-        public void Handle(Payment payment) { }
+        public PaymentReceipt Handle(Payment payment)
+        {
+            return new FailureReceipt();
+        }
     }
 }

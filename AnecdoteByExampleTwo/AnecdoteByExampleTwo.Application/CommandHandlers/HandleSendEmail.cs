@@ -3,7 +3,7 @@ using AnecdoteByExampleTwo.Application.Events;
 
 namespace AnecdoteByExampleTwo.Application.CommandHandlers
 {
-    public class HandleSendEmail
+    public class HandleSendEmail : IHandleSendEmail
     {
         readonly EventAggregator _eventAggregator;
         readonly IEmailSender _emailSender;

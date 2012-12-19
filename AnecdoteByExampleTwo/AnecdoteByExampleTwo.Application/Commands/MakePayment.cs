@@ -1,4 +1,4 @@
-﻿namespace AnecdoteByExampleTwo.Application
+﻿namespace AnecdoteByExampleTwo.Application.Commands
 {
     public class MakePayment
     {

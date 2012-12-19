@@ -2,6 +2,6 @@
 {
     public interface IPaymentHandler
     {
-        PaymentStatus Handle(Payment payment);
+        void Handle(Payment payment);
     }
 }

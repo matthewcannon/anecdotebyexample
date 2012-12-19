@@ -1,4 +1,7 @@
-﻿namespace AnecdoteByExampleTwo.Application
+﻿using AnecdoteByExampleTwo.Application.CommandHandlers;
+using AnecdoteByExampleTwo.Application.Commands;
+
+namespace AnecdoteByExampleTwo.Application.Tasks
 {
     public class ConfirmOrder
     {
@@ -16,7 +19,7 @@
             _handleMakePayment.Handle(new MakePayment(order.Payment));
 
             var orderConfirmationEmail = new OrderConfirmationEmail("noreply@confirm-order.com", order.Email);
-            _handleSendEmail.Handle(new SendEmail<OrderConfirmationEmail>(orderConfirmationEmail));
+            _handleSendEmail.Handle(new SendEmail(orderConfirmationEmail));
         }
     }
 }

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7EB0573A-C5FB-4AAB-A8CD-C9C6042D4EFA}</ProjectGuid>
+    <ProjectGuid>{34DAF014-831F-45C9-AE88-68AE411E883D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AnecdoteByExampleTwo.MailAdapters</RootNamespace>
-    <AssemblyName>AnecdoteByExampleTwo.MailAdapters</AssemblyName>
+    <RootNamespace>AnecdoteByExampleTwo.ServiceAdapter</RootNamespace>
+    <AssemblyName>AnecdoteByExampleTwo.ServiceAdapter</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,17 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ServicePaymentHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmtpEmailSender.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AnecdoteByExampleTwo.Application\AnecdoteByExampleTwo.Application.csproj">
       <Project>{44193DC0-BEB3-4055-8B54-7D888CD2326A}</Project>
       <Name>AnecdoteByExampleTwo.Application</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

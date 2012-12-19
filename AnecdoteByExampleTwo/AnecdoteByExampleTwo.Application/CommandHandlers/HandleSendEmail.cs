@@ -1,4 +1,7 @@
-﻿namespace AnecdoteByExampleTwo.Application
+﻿using AnecdoteByExampleTwo.Application.Commands;
+using AnecdoteByExampleTwo.Application.Events;
+
+namespace AnecdoteByExampleTwo.Application.CommandHandlers
 {
     public class HandleSendEmail
     {
@@ -11,10 +14,10 @@
             _emailSender = emailSender;
         }
 
-        public void Handle<T>(SendEmail<T> sendEmail) where T : Email
+        public void Handle(SendEmail sendEmail)
         {
             _emailSender.SendEmail(sendEmail.Email);
-            _eventAggregator.Publish(new EmailSent<T>());
+            _eventAggregator.Publish(new EmailSent());
         }
     }
 }

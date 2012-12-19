@@ -1,7 +1,7 @@
 ﻿using System.Net.Mail;
 using AnecdoteByExampleTwo.Application;
 
-namespace AnecdoteByExampleTwo.MailAdapters
+namespace AnecdoteByExampleTwo.MailAdapter
 {
     public class SmtpEmailSender : IEmailSender
     {

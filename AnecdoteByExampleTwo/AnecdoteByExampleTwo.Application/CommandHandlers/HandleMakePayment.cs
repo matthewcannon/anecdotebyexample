@@ -1,4 +1,6 @@
-﻿namespace AnecdoteByExampleTwo.Application
+﻿using AnecdoteByExampleTwo.Application.Commands;
+
+namespace AnecdoteByExampleTwo.Application.CommandHandlers
 {
     public class HandleMakePayment
     {

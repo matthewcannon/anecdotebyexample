@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AnecdoteByExampleTwo.Application;
+using AnecdoteByExampleTwo.Application.Events;
 using AnecdoteByExampleTwo.Factory;
 using NUnit.Framework;
 
 namespace AnecdoteByExampleTwo.Tests
 {
     [TestFixture]
-    public class payment_is_accepted : IHandle<EmailSent<OrderConfirmationEmail>>, IPaymentHandler, IEmailSender
+    public class payment_is_accepted : IHandle<EmailSent>, IEmailSender, IPaymentHandler
     {
         IList<Event> _events;
         EventAggregator _eventAggregator;
@@ -21,28 +22,25 @@ namespace AnecdoteByExampleTwo.Tests
         }
 
         [Test]
-        public void order_confirmation_email_is_sent()
+        public void email_is_sent()
         {
             var order = new Order("customer@customer.com", new Payment());
             new TaskFactory().ConfirmOrder(_eventAggregator, this, this).Execute(order);
-            Assert.That(_events.OfType<EmailSent<OrderConfirmationEmail>>().Count(), Is.EqualTo(1));
+            Assert.That(_events.OfType<EmailSent>().Count(), Is.EqualTo(1));
         }
 
-        public void Handle(EmailSent<OrderConfirmationEmail> @event)
+        public void Handle(EmailSent @event)
         {
             _events.Add(@event);
         }
 
-        public PaymentStatus Handle(Payment payment)
-        {
-            return new PaymentAccepted();
-        }
-
         public void SendEmail(Email email) { }
+
+        public void Handle(Payment payment) { }
     }
-
+    
     [TestFixture]
-    public class payment_is_rejected : IHandle<EmailSent<OrderConfirmationEmail>>, IEmailSender, IPaymentHandler
+    public class payment_is_rejected : IHandle<EmailSent>, IEmailSender, IPaymentHandler
     {
         IList<Event> _events;
         EventAggregator _eventAggregator;
@@ -56,23 +54,20 @@ namespace AnecdoteByExampleTwo.Tests
         }
 
         [Test]
-        public void order_confirmation_email_is_not_sent()
+        public void email_is_not_sent()
         {
             var order = new Order("customer@customer.com", new Payment());
             new TaskFactory().ConfirmOrder(_eventAggregator, this, this).Execute(order);
-            Assert.That(_events.OfType<EmailSent<OrderConfirmationEmail>>().Count(), Is.EqualTo(0));
+            Assert.That(_events.OfType<EmailSent>().Count(), Is.EqualTo(0));
         }
 
-        public void Handle(EmailSent<OrderConfirmationEmail> @event)
+        public void Handle(EmailSent @event)
         {
             _events.Add(@event);
         }
 
         public void SendEmail(Email email) { }
 
-        public PaymentStatus Handle(Payment payment)
-        {
-            return new PaymentRejected();
-        }
+        public void Handle(Payment payment) { }
     }
 }
